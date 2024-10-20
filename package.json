@@ -6,15 +6,16 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/",
+    "build": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && copyfiles -u 0 \"controllers/**/*\" && copyfiles -u 0 \"routes/**/*\"",
     "dev": "node dist/server.js",
-    "build-run": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && node dist/server.js"
+    "build-run": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && copyfiles -u 0 \"controllers/**/*\" && copyfiles -u 0 \"routes/**/*\" && node dist/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.3.3",
     "express": "^4.21.1",
+    "express-async-handler": "^1.2.0",
     "mongoose": "^8.7.2"
   },
   "devDependencies": {

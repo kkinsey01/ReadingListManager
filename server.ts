@@ -3,6 +3,7 @@ import path from 'path';
 import mongoose from 'mongoose';
 import bodyParser, { BodyParser } from 'body-parser';
 import { fileURLToPath } from 'url';
+import { homeRoutes } from './routes/homeRoutes.js';
 
 // Get the filename and dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -29,16 +30,22 @@ app.listen(PORT, () => {
 });
 
 app.get('/', (req: Request, res: Response) => {
-    res.status(200);
-    res.sendFile(path.join(htmlFilePath, 'login.html'));
-});
+    res.redirect('/home/login');
+})
 
-app.get('/home/loginPage', (req: Request, res: Response) => {
-    res.status(200);
-    res.sendFile(path.join(htmlFilePath, 'login.html'));
-});
+app.use('/home', homeRoutes);
 
-app.get('/home/signupPage', (req: Request, res: Response) => {
-    res.status(200);
-    res.sendFile(path.join(htmlFilePath, 'signup.html'));
-});
+// app.get('/', (req: Request, res: Response) => {
+//     res.status(200);
+//     res.sendFile(path.join(htmlFilePath, 'login.html'));
+// });
+
+// app.get('/home/loginPage', (req: Request, res: Response) => {
+//     res.status(200);
+//     res.sendFile(path.join(htmlFilePath, 'login.html'));
+// });
+
+// app.get('/home/signupPage', (req: Request, res: Response) => {
+//     res.status(200);
+//     res.sendFile(path.join(htmlFilePath, 'signup.html'));
+// });

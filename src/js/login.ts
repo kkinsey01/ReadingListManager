@@ -1,6 +1,6 @@
-function goToSignupPage() {
+async function goToSignupPage() : Promise<void> {
     console.log('signup button clicked');
-    fetch('/home/signupPage', {
+    await fetch('/home/signup', {
         method: 'GET',
         headers: {
             'Content-Type': 'text/html'

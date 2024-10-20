@@ -13,6 +13,8 @@
         "src/js/**/*",
         "src/models/**/*",
         "src/**/*",
+        "controllers/**/*",
+        "routes/**/*",
         "*.ts"
     ], // Include all TypeScript files in the src directory
     "exclude": [

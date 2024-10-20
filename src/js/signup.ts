@@ -1,5 +1,5 @@
-function goToLoginPage() {
-    fetch('/home/loginPage', {
+async function goToLoginPage(): Promise<void> {
+    await fetch('/home/login', {
         method: 'GET',
         headers: {
             'Content-Type': 'text/html'
@@ -20,5 +20,5 @@ function goToLoginPage() {
     })
     .catch(err => {
         console.log('There was a problem sending to the login page', err);
-    })
+    });
 }
