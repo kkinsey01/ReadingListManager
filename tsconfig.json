@@ -10,8 +10,9 @@
         "skipLibCheck": true // Skip type checking of declaration files
     },
     "include": [
+        "src/js/**/*",
+        "src/models/**/*",
         "src/**/*",
-        "src/*",
         "*.ts"
     ], // Include all TypeScript files in the src directory
     "exclude": [
