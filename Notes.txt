@@ -1,0 +1,7 @@
+Run "npm run build", which will run the build command in package.json. In this case, it will compile typescript files to js and then copy over all html/css files in the src folder. 
+
+Needed the copyfiles package to run the copyfiles command
+
+To run the server, now have to type "node dist/server.js" as it cannot run the typescript version
+
+Needed to add the tsconfig.json to set config settings for how the typescript compiler will compile into js files
