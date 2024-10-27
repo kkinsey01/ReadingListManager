@@ -26,6 +26,8 @@ const userSchema = new Schema<Users>({
         type: String,
         required: true,
     }
+}, {
+    collection: 'Users'
 });
 
 const UsersModel = model<Users>('Users', userSchema);

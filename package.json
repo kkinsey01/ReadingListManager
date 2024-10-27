@@ -13,10 +13,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jquery": "^3.5.31",
+    "@types/popper.js": "^1.11.0",
     "bootstrap": "^5.3.3",
     "express": "^4.21.1",
     "express-async-handler": "^1.2.0",
-    "mongoose": "^8.7.2"
+    "jquery": "^3.7.1",
+    "mongoose": "^8.7.2",
+    "popper.js": "^1.16.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

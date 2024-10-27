@@ -31,15 +31,39 @@
                     <input id="confirmPassword" class="p-2 form-control" type="password" placeholder="Confirm Password" />
                 </div>
                 <div class="d-grid mt-2">
-                    <button id="submit" class="btn btn-primary" type="button">Register</button>
+                    <button id="submit" class="btn btn-primary" type="button" onclick="signup(); return false;">Register</button>
                 </div>
             </form>
             <div class="text-center mt-3">
                 <span>Already have an account?  <button id="signupButtonLink" class="btn btn-info" type="button" onclick="goToLoginPage(); return false;">Login</button></span>
             </div>
         </div>
+    </div>    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="errorModalContainer" tabindex="-1" role="dialog" aria-labelledby="errorModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalTitle">Error</h5>                
+                </div>
+                <div id="errorModalBody" class="modal-body">
+                    *insert error text here*
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal(); return false;">OK</button>                    
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
     <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/src/js/signup.js"></script>
 </body>
 
