@@ -7,11 +7,92 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/public/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <h1>Welcome to reading list manager</h1>
-        <p>Yes I am updating!</p>
-        <script src="/src/js/bootstrap.bundle.min.js"></script>
+        <header class="p-3 bg-dark text-white">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <!-- <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                            <use xlink:href="#bootstrap"></use>
+                        </svg>
+                    </a> -->
+                    <h2 class="px-2">Reading List Manager</h2>
+        
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">Add Book</a></li>                        
+                    </ul>
+        
+                    <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+                    </form> -->
+        
+                    <div class="text-end">
+                        <button type="button" class="btn btn-outline-light me-2">Logout</button>                        
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="col-12">
+                <div class="col-6">
+                    <span class="font-weight-bold justify-content-center align-items-center">Books Overview</span>
+                    <table class="col-6">
+                        <thead>
+                            <td>Title</td>
+                            <td>Author</td>
+                            <td>Category</td>
+                            <td>Status</td>
+                        </thead>
+                        <tbody>
+                            <!-- comes from server response -->
+                        </tbody>
+                    </table>
+                </div>                
+                <div class="col-6">
+                    <span class="font-weight-bold justify-content-center align-items-center">Currently reading</span>
+                    <table>
+                        <thead>
+                            <td>Title</td>
+                            <td>Author</td>
+                            <td>Current Page</td>
+                            <td>Total Page Count</td>
+                        </thead>
+                        <tbody>
+                            <!-- comes from server response -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>            
+        </div>
+
+
+
+        <!-- Table templates -->
+        <div style="display: none;">
+            <tr id="overviewRowTemplate">
+                <td class="overview-title"></td>
+                <td class="overview-author"></td>
+                <td class="overview-category"></td>
+                <td class="overview-status"></td>
+            </tr>
+        </div>
+
+        <div style="display: none;">
+            <tr id="currStatusRowTemplate">
+                <td class="current-status-title"></td>
+                <td class="current-status-author"></td>
+                <td class="current-status-page"></td>
+                <td class="current-status-total-page"></td>
+            </tr>
+        </div>
+
+        <script src="/public/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>

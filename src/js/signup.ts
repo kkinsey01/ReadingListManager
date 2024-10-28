@@ -13,10 +13,8 @@ async function goToLoginPage(): Promise<void> {
             throw new Error('response error');            
         }
     })
-    .then(htmlContent => {
-        document.open();
-        document.write(htmlContent);
-        document.close();
+    .then(data => {
+        window.location.href = '/home/login';
     })
     .catch(err => {
         console.log('There was a problem sending to the login page', err);

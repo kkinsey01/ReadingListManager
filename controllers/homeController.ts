@@ -13,7 +13,12 @@ export const signupPage = asyncHandler(async (req: Request, res: Response, next 
     res.sendFile(path.join(htmlFilePath, 'signup.html'));
 });
 
-export const loginPage = asyncHandler(async (req, res, next) => {
+export const loginPage = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     res.status(200);
     res.sendFile(path.join(htmlFilePath, 'login.html'));
 });
+
+export const homePage = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200);
+    res.sendFile(path.join(htmlFilePath, 'index.html'));
+})

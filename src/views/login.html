@@ -16,21 +16,27 @@
             <h1 class="card-title text-center mb-5">Login</h1>
             <form>                
                 <div class="mb-3">
-                    <input class="p-2 form-control" type="text" placeholder="Username or email" />
+                    <input id="usernameInput" class="p-2 form-control" type="text" placeholder="Username or email" />
                 </div>
                 <div class="mb-3 mt-2">
-                    <input class="p-2 form-control" type="password" placeholder="Password" />
+                    <input id="passwordInput" class="p-2 form-control" type="password" placeholder="Password" />
                 </div>                
-                <div class="d-grid mt-2">
-                    <button class="btn btn-primary" type="submit">Login</button>
+                <div id="errorContainer" class="mb-3 mt-2">
+                    <span id="errorMessage" class="" style="color: red;"></span>
                 </div>
-            </form>
+                <div class="d-grid mt-2">
+                    <button id="submitButton" class="btn btn-primary" type="submit" onclick="login(); return false;">Login</button>
+                </div>
+            </form>            
             <div class="text-center mt-3">
                 <span>Don't have an account yet?  <button id="signupButtonLink" class="btn btn-info" type="button" onclick="goToSignupPage(); return false;">Signup</button></span>
             </div>
         </div>
     </div>
     <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/src/js/login.js"></script>
 </body>
 
