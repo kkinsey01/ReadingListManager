@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
-import Jwt , {JwtPayload} from 'jsonwebtoken';
+import Jwt , {JwtPayload, VerifyErrors} from 'jsonwebtoken';
 
 interface CustomJwtPayload extends JwtPayload {
     userId: string;
@@ -9,14 +9,16 @@ interface CustomJwtPayload extends JwtPayload {
 const SECRET_KEY = '42';
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.cookies.token;
     if (!token) {
+        console.log('No token');
         res.status(401).redirect('/home/login');
         return;
     }
 
-    Jwt.verify(token, SECRET_KEY, (err, user) => {
+    Jwt.verify(token, SECRET_KEY, (err: any, user: any) => {
         if (err)  {
+            console.log('Unable to verify JWT');
             res.status(403).redirect('/home/login');
             return;
         }

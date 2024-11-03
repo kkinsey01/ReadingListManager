@@ -21,8 +21,8 @@
                     <h2 class="px-2">Reading List Manager</h2>
         
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">Add Book</a></li>                        
+                        <li><a id="navHomeLink" href="#" class="nav-link px-2 text-white">Home</a></li>
+                        <li><a id="navAddBookLink" href="#" class="nav-link px-2 text-white">Add Book</a></li>                        
                     </ul>
         
                     <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -36,57 +36,141 @@
             </div>
         </header>
 
-        <div class="container">
-            <div class="col-12">
-                <div class="col-6">
-                    <span class="font-weight-bold justify-content-center align-items-center">Books Overview</span>
-                    <table class="col-6">
-                        <thead>
-                            <td>Title</td>
-                            <td>Author</td>
-                            <td>Category</td>
-                            <td>Status</td>
-                        </thead>
-                        <tbody>
-                            <!-- comes from server response -->
-                        </tbody>
-                    </table>
-                </div>                
+        <div id="HomePage">
+            <div class="container">
+                <div class="col-12">
+                    <div class="col-6">
+                        <span class="font-weight-bold justify-content-center align-items-center">Books Overview</span>
+                        <table class="table table-bordered table-hover table-responsive">
+                            <thead class="sticky-table-header">
+                                <td>Title</td>
+                                <td>Author</td>
+                                <td>Category</td>
+                                <td>Status</td>
+                                <td>Update</td>
+                                <td>Delete</td>
+                            </thead>
+                            <tbody>
+                                <!-- comes from server response -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <div class="">
+                            <span class="font-weight-bold justify-content-center align-items-center">Currently reading</span>
+                            <table class="table table-bordered table-hover table-responsive">
+                                <thead class="sticky-table-header">
+                                    <td>Title</td>
+                                    <td>Author</td>
+                                    <td>Current Page</td>
+                                    <td>Total Page Count</td>
+                                </thead>
+                                <tbody>
+                                    <!-- comes from server response -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
+        <div id="AddBookPage" style="display:none;">
+            <div class="container">
                 <div class="col-6">
                     <span class="font-weight-bold justify-content-center align-items-center">Currently reading</span>
-                    <table>
-                        <thead>
-                            <td>Title</td>
-                            <td>Author</td>
-                            <td>Current Page</td>
-                            <td>Total Page Count</td>
+                    <table class="table table-bordered table-hover table-responsive">
+                        <thead class="sticky-table-header">
+                            <td>
+                                <input type="text" id="addBookAuthor" name="addBookAuthor" placeholder="Author">
+                            </td>
+                            <td>
+                                <input type="text" id="addBookTitle" name="addBookTitle" placeholder="Title">
+                            </td>
+                            <td>
+                                <input type="text" id="addBookGenre" name="addBookGenre" placeholder="Genre">
+                            </td>
+                            <td>
+                                <button id="bookSearchButton" type="button" class="btn btn-info">Search</button>
+                            </td>
                         </thead>
                         <tbody>
                             <!-- comes from server response -->
                         </tbody>
                     </table>
                 </div>
-            </div>            
+            </div>
+        </div>       
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="errorModalContainer" tabindex="-1" role="dialog" aria-labelledby="errorModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalTitle">Error</h5>
+                    </div>
+                    <div id="errorModalBody" class="modal-body">
+                        *insert error text here*
+                    </div>
+                    <div class="modal-footer">
+                        <button id="modalCloseButton" type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-
-
         <!-- Table templates -->
+        <!-- Overall user book status -->
         <div style="display: none;">
             <tr id="overviewRowTemplate">
                 <td class="overview-title"></td>
                 <td class="overview-author"></td>
                 <td class="overview-category"></td>
-                <td class="overview-status"></td>
+                <td class="overview-status">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="statusDropDown" data-toggle="DropDown">
+                            Want to read
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Want to read</a>
+                            <a class="dropdown-item" href="#">In progress</a>
+                            <a class="dropdown-item" href="#">Finished</a>
+                        </div>
+                    </div>
+                </td>
+                <td class="overview-update">
+                    <button id="updateButton" class="btn btn-success">Update</button>                    
+                </td>
+                <td>
+                    <button id="deleteButton" class="btn btn-warning">Delete</button> <!--Pop up confirming deletion? 
+                     if they delete, need to update other table as well-->
+                </td>
             </tr>
         </div>
 
+        <!-- User currently reading books -->
         <div style="display: none;">
-            <tr id="currStatusRowTemplate">
-                <td class="current-status-title"></td>
-                <td class="current-status-author"></td>
-                <td class="current-status-page"></td>
-                <td class="current-status-total-page"></td>
+            <tr id="currReadingRowTemplate">
+                <td class="current-reading-title"></td>
+                <td class="current-reading-author"></td>
+                <td class="current-reading-page">
+                    <!-- input field -->
+                </td>
+                <td class="current-reading-total-page"></td>                                
+            </tr>
+        </div>
+
+        <!-- Add book template -->
+        <div style="display: none;">
+            <tr id="addBookRowTemplate">
+                <td class="add-book-author"></td>
+                <td class="add-book-title"></td>
+                <td class="add-book-category"></td>
+                <td class="add-book-add-button">
+                    <button id="addButton" class="btn btn-info" type="button"></button>
+                </td>
             </tr>
         </div>
 
@@ -94,5 +178,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script type="module" src="/src/js/app.js"></script>
+        <script type="module" src="/src/js/addBook.js"></script>
     </body>
 </html>
