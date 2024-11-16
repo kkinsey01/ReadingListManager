@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
 import { apiKey } from '../server.js';
-import { BookData, BookAPI } from '../src/models/book.js';
+import { BookModel, BookData, BookAPI } from '../src/models/book.js';
 import { Schema } from 'mongoose';
+import { UsersModel } from '../src/models/users.js';
 
 const apiUrl = "https://www.googleapis.com/books/v1/volumes";
 
-export const addBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const searchBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { author, title, genre } = req.body;            
 
     let apiQuery = `${apiUrl}?q=`;    
@@ -62,12 +63,101 @@ export const addBook = asyncHandler(async (req: Request, res: Response, next: Ne
                 totalPages: bookInfo.pageCount as number,
                 averageRating: bookInfo.averageRating as number,
                 numberOfRatings: bookInfo.ratingsCount as number,
+                status: 'Want to read',
                 userID: req.user?.userId as any
             }
             result.push(newBook);            
         })
+        return res.status(200).json({ Books: result });        
     })
     .catch(error => {
         console.log(error);
+        return res.status(400).json({ message: "Error recieving book data"});
     });
+})
+
+export const addBookToUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { title, authors, categories, pagesRead, totalPages} = req.body;
+    
+    const existingBookForUser = await BookModel.findOne({
+        title, authors, totalPages, userID: req.user?.userId
+    });
+    if (existingBookForUser) {
+         res.status(400).json({ message: 'User already registered book'});
+         return;
+    }
+
+    const newBook = new BookModel({
+        title: title,
+        authors: authors,
+        categories: categories,
+        pagesRead: 0,
+        totalPages: totalPages,
+        status: 'Want to read',
+        userID: req.user?.userId
+    });
+
+    console.log(newBook);
+
+    newBook.save();
+
+    res.status(200).json({ message: "Successfully added book to user profile", book: newBook})
+});
+
+export const retrieveUsersBooks = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const books = await BookModel.find({
+        userID: req.user?.userId
+    });
+
+    res.status(200).json({ books: books});
+})
+
+export const updateUserBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { title, status } = req.body;
+    
+    const existingBookForUser = await BookModel.findOne({
+        title, userID: req.user?.userId
+    });
+    if (!existingBookForUser) {
+        res.status(400).json({ message: 'Could not find book to update for User'});
+        return;
+    }    
+
+    const updatedBook = await BookModel.findByIdAndUpdate(
+        existingBookForUser.id,
+        { status },
+        { new: true}
+    );
+
+    if (updatedBook) {
+        res.status(200).json({ message: 'Update successful' });        
+    }
+    else {
+        res.status(400).json({ message: 'Update unsuccessful' });
+    }
+})
+
+export const updatePageCount = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { title, pageCount} = req.body;
+
+    const existingBookForUser = await BookModel.findOne({
+        title, userID: req.user?.userId
+    });
+    if (!existingBookForUser) {
+        res.status(400).json({ message: 'Could not find book to update for User' });
+        return;
+    }
+
+    const updatedBook = await BookModel.findByIdAndUpdate(
+        existingBookForUser.id,
+        { pageCount},
+        { new: true} 
+    );
+
+    if (updatedBook) {
+        res.status(200).json({ message: 'Update successful' });
+    }
+    else {
+        res.status(400).json({ message: 'Update unsuccessful' });
+    }
 })

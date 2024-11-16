@@ -79,7 +79,7 @@ export const loginForExistingAccount = asyncHandler(async (req: Request, res: Re
         secure: true,
         sameSite: 'strict',
         maxAge: 43200000 // 12 hour expiration
-    })
+    });
     console.log('success');
     res.redirect('/home/homepage');
 })

@@ -1,9 +1,13 @@
 import express from 'express'
 import { authenticateToken } from '../src/js/authentication.js';
-import { addBook } from '../controllers/bookController.js';
+import { addBookToUser, searchBook, retrieveUsersBooks, updateUserBook, updatePageCount } from '../controllers/bookController.js';
 
 const bookRoutes = express.Router();
 
-bookRoutes.post('/addBook', authenticateToken, addBook);
+bookRoutes.post('/searchBook', authenticateToken, searchBook);
+bookRoutes.post('/addBookToUser', authenticateToken, addBookToUser)
+bookRoutes.get('/retrieve', authenticateToken, retrieveUsersBooks);
+bookRoutes.post('/update', authenticateToken, updateUserBook);
+bookRoutes.post('/updatePageCount', authenticateToken, updatePageCount);
 
 export { bookRoutes };
