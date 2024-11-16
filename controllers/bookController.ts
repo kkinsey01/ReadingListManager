@@ -127,7 +127,7 @@ export const updateUserBook = asyncHandler(async (req: Request, res: Response, n
         existingBookForUser.id,
         { status },
         { new: true}
-    );
+    );    
 
     if (updatedBook) {
         res.status(200).json({ message: 'Update successful' });        
@@ -140,19 +140,26 @@ export const updateUserBook = asyncHandler(async (req: Request, res: Response, n
 export const updatePageCount = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { title, pageCount} = req.body;
 
+    console.log('PAGE COUNT' + pageCount);
+
     const existingBookForUser = await BookModel.findOne({
         title, userID: req.user?.userId
     });
+
+    console.log('BOOK ' + existingBookForUser);
+
     if (!existingBookForUser) {
         res.status(400).json({ message: 'Could not find book to update for User' });
         return;
-    }
+    }    
 
     const updatedBook = await BookModel.findByIdAndUpdate(
         existingBookForUser.id,
-        { pageCount},
+        { pagesRead: pageCount},
         { new: true} 
     );
+
+    console.log(updatedBook);
 
     if (updatedBook) {
         res.status(200).json({ message: 'Update successful' });
@@ -160,4 +167,22 @@ export const updatePageCount = asyncHandler(async (req: Request, res: Response, 
     else {
         res.status(400).json({ message: 'Update unsuccessful' });
     }
+})
+
+export const deleteBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { title } = req.body;
+
+    if (!title || !req.user?.userId) {
+        res.status(400).json({ message: 'Title and userID are required'});
+        return;
+    }
+
+    const result = await BookModel.deleteOne( {title, userID: req.user?.userId});
+
+    if (result.deletedCount === 0) {
+        res.status(400).json({ message: 'Book not found' });
+        return;    
+    }
+
+    res.status(200).json({ message: 'Book deleted successfully' });
 })

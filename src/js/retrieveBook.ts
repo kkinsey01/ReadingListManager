@@ -116,15 +116,50 @@ function updateBook(event: JQuery.ClickEvent) {
     })
 }
 
-function deleteBook() {
+function deleteBook(event: JQuery.ClickEvent) {
+    const button = $(event.currentTarget);
+    const rowID = button.data('row-id');
+    console.log(rowID);
+    const row = button.parent().parent();       
 
+    let title: String = row.find('.overview-title').text();
+    
+    let data = {
+        title: title
+    }
+
+    fetch('/book/delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(async response => {
+        if (response.ok) {
+            return response.json();
+        }
+        else if (response.status === 400) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+        else {
+            throw new Error('Bad API Response');
+        }
+    })
+    .then(data => {
+        retrieveBooks();
+    })
+    .catch(error => {
+        showModal(error);
+    })
 }
 
 function fillCurrentlyReading(books: BookData[]) {
     console.log('Currently Reading', books);
     let bookReadingStatusBody = $('#bookReadingStatusTableBody');
     bookReadingStatusBody.empty();
-    let newRowTemplate = $('#currReadingRowStatus');    
+    let newRowTemplate = $('#currReadingRowTemplate');    
 
     books.forEach((book: BookData) => {
         let newRow = newRowTemplate.clone(false).show();
@@ -132,7 +167,7 @@ function fillCurrentlyReading(books: BookData[]) {
         newRow.attr('data-row-id', `reading_${book.title}`);
         newRow.find('.current-reading-title').text(book.title);
         newRow.find('.current-reading-author').text(book.authors.join(', '));
-        newRow.find('.current-reading-page').text(book.pagesRead?.toString() as string);
+        newRow.find('.current-reading-input').val(book.pagesRead?.toString() as string);
         newRow.find('.current-reading-total-page').text(book.totalPages?.toString() as string);
 
         newRow.find('.update-pagecount-button').attr('id', `updatePage_${book.title}`);
