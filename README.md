@@ -10,6 +10,9 @@ Start of reading list manager web app
 - dotenv to read my API Key
 
 
-Flow of the app:
+What this app does:
 
-Once user's login is verified, they go to the home page where they can view current books status and update what they need to. Some options could be that they want to read, have read, or started reading a book. If they are currently in progress of reading a book, it will also be in another table that will show their current page (manually update). If a book isn't in any of the home page lists, they can go to the add book page. They will enter any of 3 options between title, author, and category. It'll send a request to my server, which will send a request to the Google Books API to retrieve a list of books matching what the user entered. From there, the user can select a book to add to their profile. 
+Allows a user to keep track of the books they are reading
+  - They can go to the add book page and search for a book using any combination of Author, Title, Genre. This will hit the Google Books API and return a list of matching books for the given criteria.
+  - User can select a book from the list and it will add it to their account and they can view it on the home page in the overview table. It will initially have a status of "want to read." If they change it to "in progress" the entry will get moved to the currently reading table. Here, they can update their page count of how many pages they have read
+  - Can delete a book at any point
