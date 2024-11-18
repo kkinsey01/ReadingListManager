@@ -132,3 +132,5 @@ function fillAddBooksTable(books: BookData[]) {
     $('#addBookTableContainer').show();
     $('.add-book-add-button').on('click', addBook);
 }
+
+export {searchBook};

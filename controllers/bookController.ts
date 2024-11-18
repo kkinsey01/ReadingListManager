@@ -138,35 +138,45 @@ export const updateUserBook = asyncHandler(async (req: Request, res: Response, n
 })
 
 export const updatePageCount = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { title, pageCount} = req.body;
-
-    console.log('PAGE COUNT' + pageCount);
+    const { title, pageCount} = req.body;    
 
     const existingBookForUser = await BookModel.findOne({
         title, userID: req.user?.userId
-    });
-
-    console.log('BOOK ' + existingBookForUser);
+    });    
 
     if (!existingBookForUser) {
         res.status(400).json({ message: 'Could not find book to update for User' });
         return;
     }    
 
-    const updatedBook = await BookModel.findByIdAndUpdate(
-        existingBookForUser.id,
-        { pagesRead: pageCount},
-        { new: true} 
-    );
+    let pageCountAsNum: number = parseInt(pageCount);
 
-    console.log(updatedBook);
-
-    if (updatedBook) {
-        res.status(200).json({ message: 'Update successful' });
+    if (pageCountAsNum === existingBookForUser.totalPages) {        
+        const updatedBook = await BookModel.findByIdAndUpdate(
+            existingBookForUser.id,
+            { pagesRead: pageCount, status: 'Finished'},
+            {new: true}
+        );
+        if (updatedBook) {
+            res.status(200).json({ message: 'Update successful' });
+        }
+        else {
+            res.status(400).json({ message: 'Update unsuccessful' });
+        }
     }
-    else {
-        res.status(400).json({ message: 'Update unsuccessful' });
-    }
+    else {        
+        const updatedBook = await BookModel.findByIdAndUpdate(
+            existingBookForUser.id,
+            { pagesRead: pageCount },
+            { new: true }
+        );
+        if (updatedBook) {
+            res.status(200).json({ message: 'Update successful' });
+        }
+        else {
+            res.status(400).json({ message: 'Update unsuccessful' });
+        }
+    }       
 })
 
 export const deleteBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

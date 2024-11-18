@@ -1,3 +1,5 @@
+import { response } from 'express';
+import { searchBook } from './addBook.js';
 import { retrieveBooks } from './retrieveBook.js'
 
 $(function() {
@@ -34,6 +36,17 @@ function showAdd() {
     $('#addBookTitle').text('');
     $('#addBookGenre').text('');
     $('#AddBookPage').show();
+
+    // add enter key event listener for book search
+    $('#addBookAuthor').on('keydown', enterPressed);
+    $('#addBookTitle').on('keydown', enterPressed);
+    $('#addBookGenre').on('keydown', enterPressed);
+}
+
+function enterPressed(event: JQuery.KeyDownEvent) {
+    if (event.key === 'Enter') {
+        searchBook();
+    }
 }
 
 
@@ -42,9 +55,37 @@ function hidePages() {
     $('#HomePage').hide();
 }
 
+function logout() {
+    fetch('/user/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(async response => {
+        if (response.ok) {
+            return response.text();
+        }
+        else if (response.status === 400) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+        else {
+            throw new Error('Bad API response');
+        }  
+    })
+    .then(htmlContent => {
+        window.location.href = '/home/login';
+    })
+    .catch(err => {
+        showModal(err);
+    })
+}
+
+
 $('#navHomeLink').on('click', showHome);
 $('#navAddBookLink').on('click', showAdd);
 $('#modalCloseButton').on('click', closeModal);
-
+$('#logoutButton').on('click', logout);
 
 export {showModal};

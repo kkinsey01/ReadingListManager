@@ -32,7 +32,7 @@
                     </form> -->
         
                     <div class="text-end">
-                        <button type="button" class="btn btn-outline-light me-2">Logout</button>                        
+                        <button type="button" id="logoutButton" class="btn btn-outline-light me-2">Logout</button>                        
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
 
         <div id="HomePage">
             <div class="container">
-                <div class="">
+                <div class="col-12">
                     <div class="">
                         <span class="font-weight-bold justify-content-center align-items-center">Books Overview</span>
                         <div class="table-responsive">
@@ -72,6 +72,7 @@
                                         <td>Author</td>
                                         <td>Current Page</td>
                                         <td>Total Page Count</td>
+                                        <td>Complete</td>
                                         <td>Update</td>
                                     </tr>                                    
                                 </thead>
@@ -180,6 +181,9 @@
                         <input class="current-reading-input w-75 text-center" type="number">
                     </td>
                     <td class="current-reading-total-page"></td>
+                    <td class="current-reading-complete">
+                        <button id="completeButton" class="btn btn-secondary mark-as-complete">Mark as complete</button>
+                    </td>
                     <td class="current-reading-update-button">
                         <button id="updateButton" class="btn btn-primary update-pagecount-button">Update</button>
                     </td>

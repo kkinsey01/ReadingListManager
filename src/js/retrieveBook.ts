@@ -170,19 +170,30 @@ function fillCurrentlyReading(books: BookData[]) {
         newRow.find('.current-reading-input').val(book.pagesRead?.toString() as string);
         newRow.find('.current-reading-total-page').text(book.totalPages?.toString() as string);
 
+        newRow.find('.current-reading-complete').attr('id', `markAsComplete_${book.title}`);
+        newRow.find('.current-reading-complete').attr('data-row-id', `${book.title}`);
         newRow.find('.update-pagecount-button').attr('id', `updatePage_${book.title}`);
-        newRow.find('.update-pagecount-button').attr('data-row-id', `${book.title}`);
+        newRow.find('.update-pagecount-button').attr('data-row-id', `${book.title}`);       
 
-        newRow.find('.update-pagecount-button').on('click', updatePageCount);
+        newRow.find('.current-reading-complete').on('click', markAsComplete);
+        newRow.find('.update-pagecount-button').on('click', updatePageCount);        
 
         bookReadingStatusBody.append(newRow);
     })
 }
 
+function markAsComplete(event: JQuery.ClickEvent) {
+    const button = $(event.currentTarget);
+    const rowID = button.data('row-id');    
+    const row = button.parent().parent();
+
+    let totalPageCount: number = parseInt(row.find('.current-reading-total-page').text()) as number;
+    row.find('.current-reading-input').val(totalPageCount);
+}
+
 function updatePageCount(event: JQuery.ClickEvent) {
     const button = $(event.currentTarget);
-    const rowID = button.data('row-id');
-    console.log(rowID);
+    const rowID = button.data('row-id');    
     const row = button.parent().parent();
 
     let title: String = row.find('.current-reading-title').text();
