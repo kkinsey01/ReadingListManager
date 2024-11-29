@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <meta name="description" content="Create an account page">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-success">
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
+        <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+            <h1 class="card-title text-center mb-5">Login</h1>
+            <form>                
+                <div class="mb-3">
+                    <input id="usernameInput" class="p-2 form-control" type="text" placeholder="Username or email" />
+                </div>
+                <div class="mb-3 mt-2">
+                    <input id="passwordInput" class="p-2 form-control" type="password" placeholder="Password" />
+                </div>                
+                <div id="errorContainer" class="mb-3 mt-2">
+                    <span id="errorMessage" class="" style="color: red;"></span>
+                </div>
+                <div class="d-grid mt-2">
+                    <button id="submitButton" class="btn btn-primary" type="submit" onclick="login(); return false;">Login</button>
+                </div>
+            </form>            
+            <div class="text-center mt-3">
+                <span>Don't have an account yet?  <button id="signupButtonLink" class="btn btn-info" type="button" onclick="goToSignupPage(); return false;">Signup</button></span>
+            </div>
+        </div>
+    </div>
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/src/js/login.js"></script>
+</body>
+
+</html>

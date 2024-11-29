@@ -7,11 +7,16 @@
         "outDir": "./dist", // Output directory for compiled files
         "rootDir": "./", // Root directory of your source files
         "strict": true, // Enables all strict type checking options
-        "skipLibCheck": true // Skip type checking of declaration files
+        "skipLibCheck": true, // Skip type checking of declaration files
+        "typeRoots": ["./node_modules/@types", "./types.d.ts"]
     },
     "include": [
+        "src/js/**/*",
+        "src/images/**/*",
+        "src/models/**/*",
         "src/**/*",
-        "src/*",
+        "controllers/**/*",
+        "routes/**/*",
         "*.ts"
     ], // Include all TypeScript files in the src directory
     "exclude": [
