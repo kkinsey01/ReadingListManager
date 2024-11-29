@@ -12,41 +12,43 @@
         <link href="/src/css/styles.css" rel="stylesheet">
     </head>
     <body>
-        <header class="p-3 bg-dark text-white">
+        <header class="p-3 bg-secondary text-white">
             <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <!-- <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                            <use xlink:href="#bootstrap"></use>
-                        </svg>
-                    </a> -->
-                    <h2 class="px-2">Reading List Manager</h2>
-        
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a id="navHomeLink" href="#" class="nav-link px-2 text-white">Home</a></li>
-                        <li><a id="navAddBookLink" href="#" class="nav-link px-2 text-white">Add Book</a></li>                        
-                    </ul>
-        
-                    <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-                    </form> -->
-        
-                    <div class="text-end">
-                        <button type="button" id="logoutButton" class="btn btn-outline-light me-2">Logout</button>                        
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <h2 class="px-1 mb-0">Reading List Manager</h2>
+                        <ul class="nav ms-4">
+                            <li><a id="navHomeLink" href="#" class="nav-link px-2 text-white">Home</a></li>
+                            <li><a id="navAddBookLink" href="#" class="nav-link px-2 text-white">Add Book</a></li>
+                        </ul>            
+                        <div class="ms-5"></div>  
+                        <a href="#" id="searchLink" class="image-link mx-1" data-toggle="tooltip" data-placement="bottom" title="Search">
+                            <img src="/src/images/SearchImage.png" alt="Search" class="nav-image">
+                        </a>
+                        <a href="#" id="profileLink" class="image-link mx-1" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                            <img src="/src/images/ProfilePlaceholder.png" alt="Profile" class="nav-image">
+                        </a>
+                        <button type="button" id="logoutButton" class="btn btn-outline-light ms-3 px-3">Logout</button>                      
                     </div>
+                            
                 </div>
             </div>
         </header>
 
+
+
         <div id="HomePage">
+            <h3>Home</h3>
+            <span class="font-weight-bold"></span>
             <div class="container">
                 <div class="col-12">
-                    <div class="">
-                        <span class="font-weight-bold justify-content-center align-items-center">Books Overview</span>
+                    <div id="book-overview-container">
+                        <span class="font-weight-bold justify-content-center align-items-center table-header">Books Overview</span>
                         <div class="table-responsive">
-                            <table id="bookOverviewTable" class="table table-bordered table-hover border-table">
+                            <table id="bookOverviewTable" class="table table-hover">
                                 <thead class="sticky-table-header">
                                     <tr>
+                                        <td></td>
                                         <td>Title</td>
                                         <td>Author</td>
                                         <td>Category</td>
@@ -63,11 +65,12 @@
                         </div>                        
                     </div>
                     <div class="">
-                        <div class="">
-                            <span class="font-weight-bold justify-content-center align-items-center">Currently reading</span>
-                            <table id="bookReadingStatusTable" class="table table-bordered table-hover table-responsive border-table">
+                        <div id="reading-status-container">
+                            <span class="font-weight-bold justify-content-center align-items-center table-header">Currently reading</span>
+                            <table id="bookReadingStatusTable" class="table table-hover table-responsive">
                                 <thead class="sticky-table-header">
                                     <tr>
+                                        <td></td>
                                         <td>Title</td>
                                         <td>Author</td>
                                         <td>Current Page</td>
@@ -89,7 +92,7 @@
         <div id="AddBookPage" style="display:none;">
             <div class="container">
                 <div class="col-12 mt-3">
-                    <span class="font-weight-bold justify-content-center align-items-center mb-2">Book Search</span>
+                    <span class="font-weight-bold justify-content-center align-items-center mb-2 table-header">Book Search</span>
                     <div class="d-flex">
                         <input class="me-4" type="text" id="addBookAuthor" name="addBookAuthor" placeholder="Author">
                         <input class="me-4" type="text" id="addBookTitle" name="addBookTitle" placeholder="Title">
@@ -98,10 +101,30 @@
                     </div>
 
                     <div id="addBookTableContainer" style="display: none;" class="mt-3">
-                        <span class="font-weight-bold justify-content-center align-items-center mb-2">Search Results</span>
-                        <table id="addBookTable" class="table table-hover table-responsive border-table">
+                        <div class="d-flex mb-2">
+                            <span class="font-weight-bold justify-content-center align-items-center table-header">Search Results</span>
+                            <div id="bookQueryDropDownContainer" class="px-3">
+                                <span class="font-weight-bold tableheader">Sort By</span>
+                                <div class="dropdown">
+                                    <button class="btn btn-info dropdown-toggle" type="button" id="bookSearchSortBy" data-toggle="dropdown">
+                                        Title
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#" data-value="Title">Title</a>
+                                        <a class="dropdown-item" href="#" data-value="Author">Author</a>
+                                        <a class="dropdown-item" href="#" data-value="Total Pages">Total Pages</a>
+                                        <a class="dropdown-item" href="#" data-value="Rating">Rating</a>
+                                        <a class="dropdown-item" href="#" data-value="Total Ratings">Total Ratings</a>
+                                    </div>
+                                </div>
+                            </div>  
+                            <button id="bookSearchSortIncreasing" type="button" class="btn btn-info">Increasing</button>
+                            <button id="bookSearchSortDecreasing" type="button" class="btn btn-info">Decreasing</button>
+                        </div>                        
+                        <table id="addBookTable" class="table table-hover table-responsive h-50 overflow-auto">
                             <thead class="sticky-table-header">
                                 <tr>
+                                    <th></th>
                                     <th class="font-weight-bold">Author</th>
                                     <th class="font-weight-bold">Title</th>
                                     <th class="font-weight-bold">Category</th>
@@ -111,7 +134,7 @@
                                     <th class="font-weight-bold">Add</th>
                                 </tr>                               
                             </thead>
-                            <tbody id="addBookTableBody" class="border-table">
+                            <tbody id="addBookTableBody" class="">
                                 <!-- comes from server response -->
                             </tbody>
                         </table>
@@ -144,6 +167,9 @@
         <div style="display: none;">
             <table>
                 <tr id="overviewRowTemplate">
+                    <td class="overview-thumbnail">
+                        <img class="overview-thumbnail-image book-image" src="" alt="">
+                    </td>
                     <td class="overview-title font-italic"></td>
                     <td class="overview-author"></td>
                     <td class="overview-category"></td>
@@ -175,6 +201,9 @@
         <div style="display: none;">
             <table>
                 <tr id="currReadingRowTemplate">
+                    <td class="current-reading-thumbnail">
+                        <img class="current-reading-thumbnail-image book-image" src="" alt="">
+                    </td>
                     <td class="current-reading-title font-weight-italic"></td>
                     <td class="current-reading-author"></td>
                     <td class="current-reading-page">
@@ -195,6 +224,9 @@
         <div style="display: none;">
             <table>
                 <tr id="addBookRowTemplate">
+                    <td class="add-book-thumbnail">
+                        <img class="add-book-thumbnail-image book-image" src="" alt="">
+                    </td>
                     <td class="add-book-author"></td>
                     <td class="add-book-title font-italic"></td>
                     <td class="add-book-category"></td>

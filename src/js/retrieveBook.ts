@@ -1,5 +1,7 @@
 import { BookData } from "../models/book";
-import { showModal } from "./app.js";
+import { checkTableLengths, showModal } from "./app.js";
+
+let books: BookData[] = [];
 
 async function retrieveBooks() {
     console.log('CALLED');
@@ -20,22 +22,23 @@ async function retrieveBooks() {
             throw new Error('Bad API response');
         }
     })
-    .then(data => {
-        console.log('USER BOOKS');
-        console.log(data);
-        fillCurrentUserBooks(data.books);
+    .then(data => {       
+        books = data.books;
+        fillCurrentUserBooks();
+        checkTableLengths();
     })
     .catch(error => {
         showModal(error);
     })
 }
 
-function fillCurrentUserBooks(books: BookData[]) {
+function fillCurrentUserBooks() {
     let overviewTableBody = $('#bookOverviewTableBody');
     overviewTableBody.empty();
 
     let newRowTemplate = $('#overviewRowTemplate');
     let booksInProgress: BookData[] = [];
+    let index: number = 0;
     books.forEach((book: BookData) => {
         console.log(book);
         let newRow = newRowTemplate.clone(false).show();
@@ -43,6 +46,7 @@ function fillCurrentUserBooks(books: BookData[]) {
         newRow.attr('id', `row_${book.title}`);
         newRow.attr('data-row-id', `${book.title}`);
 
+        newRow.find('.overview-thumbnail-image').attr('src', book.imageLinks.smallThumbnail);        
         newRow.find('.overview-title').text(book.title);
         newRow.find('.overview-author').text(book.authors.join(', '));
         newRow.find('.overview-category').text(book.categories.join(', '));
@@ -64,6 +68,10 @@ function fillCurrentUserBooks(books: BookData[]) {
         if (book.status === 'In progress') {
             booksInProgress.push(book);
         }
+        if (index % 2 == 0) {
+            newRow.css('background-color', '#D0D0D0');
+        }
+        index++;
 
         overviewTableBody.append(newRow);
         console.log(overviewTableBody);
@@ -108,7 +116,6 @@ function updateBook(event: JQuery.ClickEvent) {
     })
     .then(data => {
         retrieveBooks();
-
     })
     .catch(error => {
         console.log('Problem updating book', error);
@@ -161,10 +168,12 @@ function fillCurrentlyReading(books: BookData[]) {
     bookReadingStatusBody.empty();
     let newRowTemplate = $('#currReadingRowTemplate');    
 
+    let index: number  = 1;
     books.forEach((book: BookData) => {
         let newRow = newRowTemplate.clone(false).show();
         newRow.attr('id', `readingStatus_${book.title}`);
         newRow.attr('data-row-id', `reading_${book.title}`);
+        newRow.find('.current-reading-thumbnail-image').attr('src', book.imageLinks.thumbnail);
         newRow.find('.current-reading-title').text(book.title);
         newRow.find('.current-reading-author').text(book.authors.join(', '));
         newRow.find('.current-reading-input').val(book.pagesRead?.toString() as string);
@@ -178,6 +187,10 @@ function fillCurrentlyReading(books: BookData[]) {
         newRow.find('.current-reading-complete').on('click', markAsComplete);
         newRow.find('.update-pagecount-button').on('click', updatePageCount);        
 
+        if (index % 2 == 0) {
+            newRow.css('background-color', '#D0D0D0');
+        }
+        index++;
         bookReadingStatusBody.append(newRow);
     })
 }

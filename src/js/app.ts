@@ -20,6 +20,7 @@ function showHome() {
     hidePages();
     $('#addBookTableBody').empty();
     retrieveBooks();
+
     $('#HomePage').show();
 }
 
@@ -31,11 +32,11 @@ function showAdd() {
     $('#bookReadingStatusTableBody').empty();
     $('#bookOverviewTableBody').empty();
     $('#addBookTableBody').empty();
-    $('#addBookTableContainer').hide();
-    $('#addBookAuthor').text('');
-    $('#addBookTitle').text('');
-    $('#addBookGenre').text('');
+    $('#addBookTableContainer').hide();    
     $('#AddBookPage').show();
+   
+    checkTableLengths();
+    clearAddInputs();
 
     // add enter key event listener for book search
     $('#addBookAuthor').on('keydown', enterPressed);
@@ -49,10 +50,36 @@ function enterPressed(event: JQuery.KeyDownEvent) {
     }
 }
 
+function clearAddInputs() {
+    $('#addBookAuthor').text('');
+    $('#addBookAuthor').val('');
+    $('#addBookTitle').text('');
+    $('#addBookTitle').val('');
+    $('#addBookGenre').text('');
+    $('#addBookGenre').val('');
+}
 
 function hidePages() {
     $('#AddBookPage').hide();
     $('#HomePage').hide();
+}
+
+function checkTableLengths() {
+    if ($('#bookOverviewTableBody').children().length == 0) {
+        $('#book-overview-container').hide();
+        console.log('overview table length');
+    }
+    else {
+        $('#book-overview-container').show();
+    }
+
+    if ($('#bookReadingStatusTableBody').children().length == 0) {
+        $('#reading-status-container').hide();
+        console.log('status table length');
+    }
+    else {
+        $('#reading-status-container').show();
+    }
 }
 
 function logout() {
@@ -88,4 +115,4 @@ $('#navAddBookLink').on('click', showAdd);
 $('#modalCloseButton').on('click', closeModal);
 $('#logoutButton').on('click', logout);
 
-export {showModal};
+export {showModal, checkTableLengths};

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
 import { apiKey } from '../server.js';
-import { BookModel, BookData, BookAPI } from '../src/models/book.js';
+import { BookModel, BookData, BookAPI, ImageLinks } from '../src/models/book.js';
 import { Schema } from 'mongoose';
 import { UsersModel } from '../src/models/users.js';
 
@@ -63,9 +63,10 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
                 totalPages: bookInfo.pageCount as number,
                 averageRating: bookInfo.averageRating as number,
                 numberOfRatings: bookInfo.ratingsCount as number,
+                imageLinks: bookInfo.imageLinks as ImageLinks,
                 status: 'Want to read',
                 userID: req.user?.userId as any
-            }
+            }            
             result.push(newBook);            
         })
         return res.status(200).json({ Books: result });        
@@ -77,7 +78,7 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
 })
 
 export const addBookToUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { title, authors, categories, pagesRead, totalPages} = req.body;
+    const { title, authors, categories, pagesRead, totalPages, thumbnail } = req.body;
     
     const existingBookForUser = await BookModel.findOne({
         title, authors, totalPages, userID: req.user?.userId
@@ -94,10 +95,9 @@ export const addBookToUser = asyncHandler(async (req: Request, res: Response, ne
         pagesRead: 0,
         totalPages: totalPages,
         status: 'Want to read',
+        thumbnail: thumbnail,
         userID: req.user?.userId
-    });
-
-    console.log(newBook);
+    });    
 
     newBook.save();
 

@@ -8,7 +8,8 @@ interface BookData {
     totalPages?: Number,
     averageRating?: Number,
     numberOfRatings?: Number,
-    status: String,
+    imageLinks: ImageLinks,
+    status: String,    
     userID: Schema.Types.ObjectId
 }
 
@@ -29,7 +30,13 @@ interface VolumeInfo {
     categories: string[],    
     pageCount: number,
     averageRating: number,
-    ratingsCount: number
+    ratingsCount: number,
+    imageLinks: ImageLinks
+}
+
+interface ImageLinks {
+    smallThumbnail: string,
+    thumbnail: string
 }
 
 interface Book extends Document {
@@ -41,6 +48,7 @@ interface Book extends Document {
     averageRating?: Number,
     numberOfRatings?: Number,
     status: String,
+    thumbnail: String,
     userID: Schema.Types.ObjectId
 }
 
@@ -51,9 +59,10 @@ const bookSchema = new Schema<Book>({
     pagesRead: { type: Number, required: true},
     totalPages: { type: Number, required: true},
     status: { type: String, required: true},
+    thumbnail: { type: String},
     userID: { type: Schema.Types.ObjectId, ref: 'Users', required: true }
 })
 
 const BookModel = model<Book>('Book', bookSchema, 'Books');
 
-export { BookModel, BookData, BookAPI };
+export { BookModel, BookData, BookAPI, ImageLinks };

@@ -1,6 +1,9 @@
 import { showModal } from "./app.js";
 import { BookData } from "../models/book.js";
 
+let queriedBooks: BookData[] = [];
+
+
 async function searchBook() {
     let author: String = $('#addBookAuthor').val() as string;
     let title: String = $('#addBookTitle').val() as string;
@@ -40,7 +43,8 @@ async function searchBook() {
     .then(data => {
         console.log('DATA');
         console.log(data);
-        fillAddBooksTable(data.Books as BookData[]);
+        queriedBooks = data.Books;
+        fillAddBooksTable();
     })
     .catch(err => {
         console.log('Problem searching for book', err);
@@ -60,6 +64,7 @@ async function addBook(event: JQuery.ClickEvent): Promise<void> {
     let categories: String[] = row.find('.add-book-category').text().split(', ');
     let pagesRead: Number = 0;
     let totalPages: Number = Number(row.find('.add-book-total-pages').text());
+    let thumbnail: string = row.find('.add-book-thumbnail-image').attr('src') as string;
 
     console.log(`Title ${title}`);
     let newBook = {
@@ -67,7 +72,8 @@ async function addBook(event: JQuery.ClickEvent): Promise<void> {
         authors: authors,
         categories: categories,
         pagesRead: pagesRead,
-        totalPages: totalPages
+        totalPages: totalPages,
+        smallThumbnail: thumbnail
     }
 
     fetch('/book/addBookToUser', {
@@ -100,16 +106,17 @@ async function addBook(event: JQuery.ClickEvent): Promise<void> {
 $('#bookSearchButton').on('click', searchBook);
 
 
-function fillAddBooksTable(books: BookData[]) {
+function fillAddBooksTable() {
     let table = $('#addBookTableBody');
     $('#addBookTableContainer').hide();
     $('#addBookTableBody').empty();    
 
-    books.forEach(book => {        
+    queriedBooks.forEach(book => {        
         let newRow = $('#addBookRowTemplate').clone(false).show();              
         let authors: string[] = book.authors;
         let authorText = authors.join(', '); // Join authors with comma and space
         let title: string = book.title;
+        newRow.find('.add-book-thumbnail-image').attr('src', book.imageLinks.smallThumbnail);
         newRow.find('.add-book-author').text(authorText);
         newRow.find('.add-book-title').text(title);
         let categories: string[] = book.categories;
@@ -125,12 +132,27 @@ function fillAddBooksTable(books: BookData[]) {
         title = title.replace(/\s/g, "");
         title = title.replace("'", "");
         newRow.attr('id', `${title}_${totalPages}`);
-        newRow.find('.add-book-add-button').attr('data-row-id', `${title}_${totalPages}`);
+        newRow.find('.add-book-add-button').attr('data-row-id', `${title}_${totalPages}`);       
+
+        newRow.find('.dropdown-item').on('click', function() {
+            var value = $(this).data('value');
+            $(this).closest('.dropdown').find('.dropdown-toggle').text(value);
+        });
+
+
         table.append(newRow);        
     });
 
     $('#addBookTableContainer').show();
     $('.add-book-add-button').on('click', addBook);
+
+    $('#bookQueryDropDownContainer').find('.dropdown-item').on('click', function () {
+        var value = $(this).data('value');
+        $(this).closest('.dropdown').find('.dropdown-toggle').text(value);
+    });
 }
+
+
+
 
 export {searchBook};

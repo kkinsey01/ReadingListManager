@@ -6,8 +6,9 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && copyfiles -u 0 \"controllers/**/*\" && copyfiles -u 0 \"routes/**/*\"",
+    "build": "tsc && npm run copy-images && npm run build-run",
     "dev": "node dist/server.js",
+    "copy-images": "copyfiles -u 2 src/images/**/* dist/src/images",
     "build-run": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && copyfiles -u 0 \"controllers/**/*\" && copyfiles -u 0 \"routes/**/*\" && node dist/server.js"
   },
   "author": "",
