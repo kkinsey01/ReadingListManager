@@ -77,11 +77,17 @@ async function signup(): Promise<void> {
         },
         body: JSON.stringify(data)
     })
-    .then(response => {
-        if (!response.ok){
-            throw new Error('Bad network response');
+    .then(async response => {
+        if (response.ok) {
+            return response.json();
         }
-        return response.json();
+        else if (response.status === 400) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+        else {
+            throw new Error('Bad API response');
+        }      
     })
     .then(data => {
         showModal('User successfully created', 'Successful');        

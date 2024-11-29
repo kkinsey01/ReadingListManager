@@ -6,8 +6,9 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && copyfiles -u 0 \"controllers/**/*\" && copyfiles -u 0 \"routes/**/*\"",
+    "build": "tsc && npm run copy-images && npm run build-run",
     "dev": "node dist/server.js",
+    "copy-images": "copyfiles -u 2 src/images/**/* dist/src/images",
     "build-run": "tsc && copyfiles -u 1 \"src/**/*.{html,css}\" dist/src && copyfiles -u 0 \"public/**/*\" dist/ && copyfiles -u 0 \"controllers/**/*\" && copyfiles -u 0 \"routes/**/*\" && node dist/server.js"
   },
   "author": "",
@@ -17,6 +18,8 @@
     "@types/popper.js": "^1.11.0",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-async-handler": "^1.2.0",
     "jquery": "^3.7.1",
@@ -26,6 +29,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.7.7",

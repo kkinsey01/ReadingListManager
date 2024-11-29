@@ -41,18 +41,20 @@ async function login() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
     })
     .then(async response => {
-        console.log(response);
-        if (!response.ok) {
-            return response.json().then(errorData => {
-                $('#errorMessage').text(errorData.message);
-                $('#errorContainer').show();
-                throw new Error('Bad API response');
-            });
+        if (response.ok) {
+            return response.text();
         }
-        return response.text()
+        else if (response.status === 400) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+        else {
+            throw new Error('Bad API response');
+        }  
     })
     .then(data => {
         window.location.href = '/home/homepage';

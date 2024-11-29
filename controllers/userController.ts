@@ -4,6 +4,7 @@ import { UsersModel } from '../src/models/users.js'
 import Jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../src/js/authentication.js';
 import bcrypt from 'bcrypt'
+import { request } from 'http';
 
 export const signupForNewAccount = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { fullName, email, userName, password, confirmPassword } = req.body;
@@ -43,6 +44,16 @@ export const signupForNewAccount = asyncHandler(async (req: Request, res: Respon
     res.status(201).json({ message: "User created successfully", user: newUser});
 })
 
+export const logout = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    res.cookie('token', '', {
+        expires: new Date(0), 
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict'
+    });
+    res.status(200).json({ message: 'Logged out successfully'});
+})
+
 export const loginForExistingAccount = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { userName, password } = req.body;    
 
@@ -79,7 +90,8 @@ export const loginForExistingAccount = asyncHandler(async (req: Request, res: Re
         secure: true,
         sameSite: 'strict',
         maxAge: 43200000 // 12 hour expiration
-    })
+    });
+    console.log('success');
     res.redirect('/home/homepage');
 })
 
