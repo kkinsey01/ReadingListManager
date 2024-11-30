@@ -9,6 +9,7 @@ interface BookData {
     averageRating?: Number,
     numberOfRatings?: Number,
     imageLinks: ImageLinks,
+    review?: string,
     status: String,    
     userID: Schema.Types.ObjectId
 }
@@ -47,6 +48,7 @@ interface Book extends Document {
     totalPages?: Number,
     averageRating?: Number,
     numberOfRatings?: Number,
+    review: string,
     status: String,
     thumbnail: String,
     userID: Schema.Types.ObjectId
@@ -60,9 +62,10 @@ const bookSchema = new Schema<Book>({
     totalPages: { type: Number, required: true},
     status: { type: String, required: true},
     thumbnail: { type: String},
+    review: { type: String, required: false},
     userID: { type: Schema.Types.ObjectId, ref: 'Users', required: true }
 })
 
 const BookModel = model<Book>('Book', bookSchema, 'Books');
 
-export { BookModel, BookData, BookAPI, ImageLinks };
+export { BookModel, BookData, BookAPI, ImageLinks, Book };

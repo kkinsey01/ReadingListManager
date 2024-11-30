@@ -1,7 +1,7 @@
-import { BookData } from "../models/book";
+import { Book } from "../models/book";
 import { checkTableLengths, showModal } from "./app.js";
 
-let books: BookData[] = [];
+let books: Book[] = [];
 
 async function retrieveBooks() {
     console.log('CALLED');
@@ -37,16 +37,16 @@ function fillCurrentUserBooks() {
     overviewTableBody.empty();
 
     let newRowTemplate = $('#overviewRowTemplate');
-    let booksInProgress: BookData[] = [];
+    let booksInProgress: Book[] = [];
     let index: number = 0;
-    books.forEach((book: BookData) => {
+    books.forEach((book: Book) => {
         console.log(book);
         let newRow = newRowTemplate.clone(false).show();
         console.log(newRow);
         newRow.attr('id', `row_${book.title}`);
         newRow.attr('data-row-id', `${book.title}`);
 
-        newRow.find('.overview-thumbnail-image').attr('src', book.imageLinks.smallThumbnail);        
+        newRow.find('.overview-thumbnail-image').attr('src', book.thumbnail as string);        
         newRow.find('.overview-title').text(book.title);
         newRow.find('.overview-author').text(book.authors.join(', '));
         newRow.find('.overview-category').text(book.categories.join(', '));
@@ -162,18 +162,18 @@ function deleteBook(event: JQuery.ClickEvent) {
     })
 }
 
-function fillCurrentlyReading(books: BookData[]) {
+function fillCurrentlyReading(books: Book[]) {
     console.log('Currently Reading', books);
     let bookReadingStatusBody = $('#bookReadingStatusTableBody');
     bookReadingStatusBody.empty();
     let newRowTemplate = $('#currReadingRowTemplate');    
 
     let index: number  = 1;
-    books.forEach((book: BookData) => {
+    books.forEach((book: Book) => {
         let newRow = newRowTemplate.clone(false).show();
         newRow.attr('id', `readingStatus_${book.title}`);
         newRow.attr('data-row-id', `reading_${book.title}`);
-        newRow.find('.current-reading-thumbnail-image').attr('src', book.imageLinks.thumbnail);
+        newRow.find('.current-reading-thumbnail-image').attr('src', book.thumbnail as string);
         newRow.find('.current-reading-title').text(book.title);
         newRow.find('.current-reading-author').text(book.authors.join(', '));
         newRow.find('.current-reading-input').val(book.pagesRead?.toString() as string);

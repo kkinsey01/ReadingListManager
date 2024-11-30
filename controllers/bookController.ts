@@ -78,7 +78,7 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
 })
 
 export const addBookToUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { title, authors, categories, pagesRead, totalPages, thumbnail } = req.body;
+    const { title, authors, categories, pagesRead, totalPages, smallThumbnail } = req.body;
     
     const existingBookForUser = await BookModel.findOne({
         title, authors, totalPages, userID: req.user?.userId
@@ -95,7 +95,7 @@ export const addBookToUser = asyncHandler(async (req: Request, res: Response, ne
         pagesRead: 0,
         totalPages: totalPages,
         status: 'Want to read',
-        thumbnail: thumbnail,
+        thumbnail: smallThumbnail,
         userID: req.user?.userId
     });    
 

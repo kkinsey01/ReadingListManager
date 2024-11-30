@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
 import { UsersModel } from '../src/models/users.js'
+import { BookModel } from '../src/models/book.js';
 import Jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../src/js/authentication.js';
 import bcrypt from 'bcrypt'
@@ -94,6 +95,70 @@ export const loginForExistingAccount = asyncHandler(async (req: Request, res: Re
     console.log('success');
     res.redirect('/home/homepage');
 })
+
+export const retrieveProfile = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    let { sortBy } = req.body;
+    const userID = req.user?.userId;
+
+    if (!userID) {
+        res.status(400).json({ message: "No token"});
+        return 
+    }
+
+    if (!sortBy) {
+        sortBy = "All";
+    }
+
+    let books = await BookModel.find({
+        userID : userID
+    });    
+
+    switch (sortBy) {
+        case "All": 
+            break;
+        case "In Progress":
+            books = books.filter(w => (w.pagesRead as number) > 0);
+            break;
+        case "Positive":
+            books = books.filter(w => w.review == "Positive");
+            break;
+        case "Negative": 
+            books = books.filter(w => w.review == "Negative");
+            break;
+        default: 
+            break;
+    }
+
+    res.status(200).json({ books: books});
+})
+
+export const updateReview = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    let { review, title } = req.body;
+    const userID = req.user?.userId;
+
+    if (!userID) {
+        res.status(400).json({ message: "No token" });
+        return;
+    }
+
+    if (!review) {
+        res.status(400).json({ message: "Update Review fetch error"});
+        return;
+    }    
+
+    let bookToUpdate = await BookModel.findOneAndUpdate(
+        { title: title, userID: req.user?.userId},
+        { $set: { review: review ? "Positive" : "Negative"}},
+        { new: true}
+    );
+
+    if (!bookToUpdate) {
+        res.status(400).json({ message: "Error updating review"});
+        return;
+    }
+
+    res.status(200).json({ message: "Update successful"});
+});
 
 function validateUserInfo(name: String, email: String, userName: String, password: String, confirmPassword: String) : String
 {

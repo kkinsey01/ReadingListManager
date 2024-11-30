@@ -143,6 +143,37 @@
             </div>
         </div>       
 
+        <div id="ProfilePage" style="display: none;">
+            <div class="container">
+                <div class="col-12">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="profileSortBy" data-toggle="dropdown">
+                            All
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-value="Title">All</a>
+                            <a class="dropdown-item" href="#" data-value="In Progress">In Progress</a>
+                            <a class="dropdown-item" href="#" data-value="Likes">Likes</a>
+                            <a class="dropdown-item" href="#" data-value="Dislikes">Dislikes</a>                            
+                        </div>
+                    </div>
+                    <table class="table table-hover table-responsive">
+                        <tr>
+                            <th></th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th>Page Count</th>
+                            <th>Review</th>
+                        </tr>
+                        <tbody id="profileTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Modal -->
         <div class="modal fade" id="errorModalContainer" tabindex="-1" role="dialog" aria-labelledby="errorModal"
@@ -240,6 +271,29 @@
             </table>           
         </div>
 
+        <!-- Profile table template -->
+        <div style="display: none;">
+            <table>
+                <tr id="profileRowTemplate">
+                    <td class="profile-thumbnail">
+                        <img class="profile-book-thumbnail-image book-image" src="" alt="">
+                    </td>
+                    <td class="profile-title"></td>
+                    <td class="profile-author"></td>
+                    <td class="profile-genre"></td>
+                    <td class="profile-page-count"></td>
+                    <td class="profile-review">
+                        <a href="#" class="image-link mx-1 profile-positive" data-toggle="tooltip" data-placement="bottom" title="Positive">
+                            <img src="/src/images/ThumbsUp.png" class="nav-image" alt="Positive Review">
+                        </a>
+                        <a href="#" class="image-link mx-1 profile-negative" data-toggle="tooltip" data-placement="bottom" title="Negative">
+                            <img src="/src/images/ThumbsDown.png" class="nav-image" alt="Negative Review" style="width: 60px; height: auto;">
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <script src="/public/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -247,5 +301,6 @@
         <script defer type="module" src="/src/js/app.js"></script>
         <script defer type="module" src="/src/js/addBook.js"></script>
         <script defer type="module" src="/src/js/retrieveBook.js"></script>
+        <script defer type="module" src="/src/js/profile.js"></script>
     </body>
 </html>
