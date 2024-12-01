@@ -16,3 +16,5 @@ Allows a user to keep track of the books they are reading
   - They can go to the add book page and search for a book using any combination of Author, Title, Genre. This will hit the Google Books API and return a list of matching books for the given criteria.
   - User can select a book from the list and it will add it to their account and they can view it on the home page in the overview table. It will initially have a status of "want to read." If they change it to "in progress" the entry will get moved to the currently reading table. Here, they can update their page count of how many pages they have read
   - Can delete a book at any point
+
+User can go to their profile page and it will give data about the books they have read. How many books/pages they have read and allows the user to leave a positive/negative rating that will serve as a counter to how many likes and dislikes they have
