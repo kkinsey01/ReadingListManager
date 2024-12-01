@@ -145,31 +145,48 @@
 
         <div id="ProfilePage" style="display: none;">
             <div class="container">
-                <div class="col-12">
-                    <div class="dropdown">
-                        <button class="btn btn-info dropdown-toggle" type="button" id="profileSortBy" data-toggle="dropdown">
-                            All
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" data-value="Title">All</a>
-                            <a class="dropdown-item" href="#" data-value="In Progress">In Progress</a>
-                            <a class="dropdown-item" href="#" data-value="Likes">Likes</a>
-                            <a class="dropdown-item" href="#" data-value="Dislikes">Dislikes</a>                            
+                <div class="mt-3 row">
+                    <div id="ProfileCard" class="col-3 card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+                        <h1 class="card-title text-center mb-5">Profile</h1>
+                        <div>
+                            <span id="profileTotalBooks" class="profile-item">Total Books: </span>
+                            <span id="profileBooksRead" class="profile-item">Total Read: </span>
+                            <span id="profilePagesRead" class="profile-item">Pages Read: </span>
+                            <span id="profilePagesToRead" class="profile-item">Pages Left: </span>
+                            <span id="profileNumLikes" class="profile-item">Total Likes: </span>
+                            <span id="profileNumDislikes" class="profile-item">Total Dislikes: </span>
+
                         </div>
                     </div>
-                    <table class="table table-hover table-responsive">
-                        <tr>
-                            <th></th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Genre</th>
-                            <th>Page Count</th>
-                            <th>Review</th>
-                        </tr>
-                        <tbody id="profileTableBody">
+                    <div class="col-9">                
+                        <div class="d-flex">
+                            <span class="font-weight-bold">Sort By:</span>
+                            <div class="dropdown ms-3">
+                                <button class="btn btn-info dropdown-toggle" type="button" id="profileSortBy" data-toggle="dropdown">
+                                    All
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" data-value="All">All</a>
+                                    <a class="dropdown-item" href="#" data-value="In Progress">In Progress</a>
+                                    <a class="dropdown-item" href="#" data-value="Likes">Likes</a>                                    
+                                    <a class="dropdown-item" href="#" data-value="Dislikes">Dislikes</a>
+                                </div>
+                            </div>
+                        </div>                    
+                        <table id="profileTable" class="table table-hover table-responsive">
+                            <tr>
+                                <th></th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Genre</th>
+                                <th>Page Count</th>
+                                <th>Review</th>
+                            </tr>
+                            <tbody id="profileTableBody">
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

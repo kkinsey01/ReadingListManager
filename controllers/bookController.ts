@@ -7,6 +7,8 @@ import { UsersModel } from '../src/models/users.js';
 
 const apiUrl = "https://www.googleapis.com/books/v1/volumes";
 
+const defaultImageLinks: ImageLinks = { smallThumbnail: '', thumbnail: ''};
+
 export const searchBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { author, title, genre } = req.body;            
 
@@ -57,18 +59,19 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
             let bookInfo = typedItem.volumeInfo;
             let newBook: BookData = {
                 title: bookInfo.title as string,
-                authors: bookInfo.authors as string[],
-                categories: bookInfo.categories as string[],
+                authors: bookInfo.authors as string[] ?? {},
+                categories: bookInfo.categories as string[] ?? {},
                 pagesRead: 0,
-                totalPages: bookInfo.pageCount as number,
-                averageRating: bookInfo.averageRating as number,
-                numberOfRatings: bookInfo.ratingsCount as number,
-                imageLinks: bookInfo.imageLinks as ImageLinks,
+                totalPages: bookInfo.pageCount as number ?? 0,
+                averageRating: bookInfo.averageRating as number ?? 0,
+                numberOfRatings: bookInfo.ratingsCount as number ?? 0,
+                imageLinks: bookInfo.imageLinks as ImageLinks ?? defaultImageLinks,
                 status: 'Want to read',
                 userID: req.user?.userId as any
             }            
             result.push(newBook);            
         })
+        console.log(result);
         return res.status(200).json({ Books: result });        
     })
     .catch(error => {

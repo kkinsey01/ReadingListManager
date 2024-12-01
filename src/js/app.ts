@@ -9,6 +9,8 @@ $(function() {
     $('#ProfilePage').find('.dropdown-item').on('click', function () {
         var value = $(this).data('value');
         $(this).closest('.dropdown').find('.dropdown-toggle').text(value);
+
+        retrieveProfileData();
     })
 })
 

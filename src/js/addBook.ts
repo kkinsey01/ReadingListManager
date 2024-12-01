@@ -105,6 +105,7 @@ async function addBook(event: JQuery.ClickEvent): Promise<void> {
 }
 $('#bookSearchButton').on('click', searchBook);
 
+let placeholderBookImageSrc: string = "/src/images/BookImagePlaceholder.png";
 
 function fillAddBooksTable() {
     let table = $('#addBookTableBody');
@@ -112,16 +113,26 @@ function fillAddBooksTable() {
     $('#addBookTableBody').empty();    
 
     queriedBooks.forEach(book => {        
-        let newRow = $('#addBookRowTemplate').clone(false).show();              
-        let authors: string[] = book.authors;
-        let authorText = authors.join(', '); // Join authors with comma and space
+        let newRow = $('#addBookRowTemplate').clone(false).show();                      
         let title: string = book.title;
-        newRow.find('.add-book-thumbnail-image').attr('src', book.imageLinks.smallThumbnail);
-        newRow.find('.add-book-author').text(authorText);
+        console.log('BOOK', book);
+        if (book.imageLinks.smallThumbnail === '') {
+            newRow.find('.add-book-thumbnail-image').attr('src', placeholderBookImageSrc);
+        }
+        else {
+            newRow.find('.add-book-thumbnail-image').attr('src', book.imageLinks.smallThumbnail);
+        }        
+        if (book.authors.length > 0) {
+            let authors: string[] = book.authors;
+            let authorText = authors.join(', '); // Join authors with comma and space
+            newRow.find('.add-book-author').text(authorText);
+        }        
         newRow.find('.add-book-title').text(title);
-        let categories: string[] = book.categories;
-        let categoryText = categories.join(', '); // Join categories with comma and space
-        newRow.find('.add-book-category').text(categoryText);
+        if (book.categories.length > 0) {
+            let categories: string[] = book.categories;
+            let categoryText = categories.join(', '); // Join categories with comma and space        
+            newRow.find('.add-book-category').text(categoryText);
+        }        
         let totalPages: string = book.totalPages?.toString() as string;
         newRow.find('.add-book-total-pages').text(totalPages);
 

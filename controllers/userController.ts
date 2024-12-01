@@ -6,6 +6,7 @@ import Jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../src/js/authentication.js';
 import bcrypt from 'bcrypt'
 import { request } from 'http';
+import { Profile } from '../src/models/profile.js';
 
 export const signupForNewAccount = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { fullName, email, userName, password, confirmPassword } = req.body;
@@ -113,23 +114,49 @@ export const retrieveProfile = asyncHandler(async (req: Request, res: Response, 
         userID : userID
     });    
 
+    let sortedBooks = books;
+
     switch (sortBy) {
         case "All": 
             break;
         case "In Progress":
-            books = books.filter(w => (w.pagesRead as number) > 0);
+            sortedBooks = books.filter(w => (w.pagesRead as number) > 0);
             break;
-        case "Positive":
-            books = books.filter(w => w.review == "Positive");
+        case "Likes":
+            sortedBooks = books.filter(w => w.review === "Positive");
             break;
-        case "Negative": 
-            books = books.filter(w => w.review == "Negative");
+        case "Dislikes": 
+            sortedBooks = books.filter(w => w.review === "Negative");
             break;
         default: 
             break;
     }
+    
+    let pagesReadCounter: number = 0;
+    let pagesLeftCounter: number = 0;
+    let totalLikes: number = 0;
+    let totalDislikes: number = 0;
+    for (let i = 0; i < books.length; i++) {
+        pagesReadCounter += books[i].pagesRead as number;
+        pagesLeftCounter += ((books[i].totalPages as number) - (books[i].pagesRead as number))
+        if (books[i].review === 'Positive') {
+            totalLikes++;
+        }
+        else if (books[i].review === 'Negative') {
+            totalDislikes++;
+        }
+    }
 
-    res.status(200).json({ books: books});
+    let profileInfo: Profile = {
+        totalBooks: books.length,
+        totalRead: books.filter(w => w.pagesRead === w.totalPages).length,
+        pagesRead: pagesReadCounter,
+        pagesLeft: pagesLeftCounter,
+        totalLikes: totalLikes,
+        totalDislikes: totalDislikes
+    };
+
+    res.status(200).json({ books: sortedBooks, profile: profileInfo });
 })
 
 export const updateReview = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -140,11 +167,6 @@ export const updateReview = asyncHandler(async (req: Request, res: Response, nex
         res.status(400).json({ message: "No token" });
         return;
     }
-
-    if (!review) {
-        res.status(400).json({ message: "Update Review fetch error"});
-        return;
-    }    
 
     let bookToUpdate = await BookModel.findOneAndUpdate(
         { title: title, userID: req.user?.userId},

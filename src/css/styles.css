@@ -29,6 +29,11 @@
     display: block;
 }
 
+.profile-item {
+    display: block;
+    margin-bottom: .5rem;
+}
+
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;    
 }
