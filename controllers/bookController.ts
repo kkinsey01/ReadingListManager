@@ -33,6 +33,8 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
     if (apiQuery.charAt(apiQuery.length - 1) === '+')
         apiQuery = apiQuery.slice(0, -1);
 
+    apiQuery += `&maxResults=20`;
+
     apiQuery += `&key=${apiKey}`;
 
     apiQuery = apiQuery.replace(/ /g, '+');
@@ -70,8 +72,7 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
                 userID: req.user?.userId as any
             }            
             result.push(newBook);            
-        })
-        console.log(result);
+        })        
         return res.status(200).json({ Books: result });        
     })
     .catch(error => {

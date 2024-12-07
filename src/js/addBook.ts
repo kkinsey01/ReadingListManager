@@ -20,8 +20,6 @@ async function searchBook() {
         genre: genre
     };
 
-    console.log(data);
-
     fetch('/book/searchBook', {
         method: 'POST',
         headers: {
@@ -40,11 +38,9 @@ async function searchBook() {
             throw new Error('Bad API response');
         } 
     })
-    .then(data => {
-        console.log('DATA');
-        console.log(data);
+    .then(data => {        
         queriedBooks = data.Books;
-        fillAddBooksTable();
+        fillAddBooksTable("");
     })
     .catch(err => {
         console.log('Problem searching for book', err);
@@ -53,8 +49,7 @@ async function searchBook() {
 }
 
 async function addBook(event: JQuery.ClickEvent): Promise<void> {
-    const button = $(event.currentTarget);
-    console.log('Add clicked!');
+    const button = $(event.currentTarget);    
 
     const rowId = button.data('row-id');
     const row = $(`#${rowId}`);
@@ -107,10 +102,12 @@ $('#bookSearchButton').on('click', searchBook);
 
 let placeholderBookImageSrc: string = "/src/images/BookImagePlaceholder.png";
 
-function fillAddBooksTable() {
+function fillAddBooksTable(sortBy: string) {
     let table = $('#addBookTableBody');
     $('#addBookTableContainer').hide();
     $('#addBookTableBody').empty();    
+
+    sortSearchedBooks(sortBy);
 
     queriedBooks.forEach(book => {        
         let newRow = $('#addBookRowTemplate').clone(false).show();                      
@@ -160,10 +157,34 @@ function fillAddBooksTable() {
     $('#bookQueryDropDownContainer').find('.dropdown-item').on('click', function () {
         var value = $(this).data('value');
         $(this).closest('.dropdown').find('.dropdown-toggle').text(value);
+        fillAddBooksTable(value);
     });
 }
 
+function sortSearchedBooks(sortBy: string) {
 
+    // makes more sense to sort in descending order for the numeric values.
+
+    switch (sortBy) {
+        case "Title":
+            queriedBooks = queriedBooks.sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case "Author":
+            queriedBooks = queriedBooks.sort((a, b) => a.authors[0].localeCompare(b.authors[0]));
+            break;
+        case "Total Pages":
+            queriedBooks = queriedBooks.sort((a, b) => (b.totalPages as number) - (a.totalPages as number));
+            break;
+        case "Rating":
+            queriedBooks = queriedBooks.sort((a, b) => (b.averageRating as number) - (a.averageRating as number));
+            break;
+        case "Total Ratings":
+            queriedBooks = queriedBooks.sort((a, b) => (b.numberOfRatings as number) - (a.numberOfRatings as number));
+            break;
+        default: 
+            break;        
+    }
+}
 
 
 export {searchBook};
