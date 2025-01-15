@@ -1,9 +1,17 @@
 import { response } from 'express';
 import { searchBook } from './addBook.js';
 import { retrieveBooks } from './retrieveBook.js'
+import { retrieveProfileData } from './profile.js';
 
 $(function() {
     retrieveBooks();   
+
+    $('#ProfilePage').find('.dropdown-item').on('click', function () {
+        var value = $(this).data('value');
+        $(this).closest('.dropdown').find('.dropdown-toggle').text(value);
+
+        retrieveProfileData();
+    })
 })
 
 function showModal(bodyText: string, modalTitle: string = "Error") {
@@ -29,9 +37,7 @@ function showHome() {
 
 function showAdd() {
     hidePages();
-    $('#bookReadingStatusTableBody').empty();
-    $('#bookOverviewTableBody').empty();
-    $('#addBookTableBody').empty();
+    clearTables();    
     $('#addBookTableContainer').hide();    
     $('#AddBookPage').show();
    
@@ -42,6 +48,13 @@ function showAdd() {
     $('#addBookAuthor').on('keydown', enterPressed);
     $('#addBookTitle').on('keydown', enterPressed);
     $('#addBookGenre').on('keydown', enterPressed);
+}
+
+function showUserProfile() {
+    hidePages();
+    clearTables();
+    $('#ProfilePage').show();
+    retrieveProfileData();
 }
 
 function enterPressed(event: JQuery.KeyDownEvent) {
@@ -62,6 +75,7 @@ function clearAddInputs() {
 function hidePages() {
     $('#AddBookPage').hide();
     $('#HomePage').hide();
+    $('#ProfilePage').hide();
 }
 
 function checkTableLengths() {
@@ -80,6 +94,13 @@ function checkTableLengths() {
     else {
         $('#reading-status-container').show();
     }
+}
+
+function clearTables() {
+    $('#bookReadingStatusTableBody').empty();
+    $('#bookOverviewTableBody').empty();
+    $('#addBookTableBody').empty();
+    $('#profileTableBody').empty();
 }
 
 function logout() {
@@ -114,5 +135,6 @@ $('#navHomeLink').on('click', showHome);
 $('#navAddBookLink').on('click', showAdd);
 $('#modalCloseButton').on('click', closeModal);
 $('#logoutButton').on('click', logout);
+$('#profileLink').on('click', showUserProfile);
 
 export {showModal, checkTableLengths};

@@ -7,6 +7,8 @@ import { UsersModel } from '../src/models/users.js';
 
 const apiUrl = "https://www.googleapis.com/books/v1/volumes";
 
+const defaultImageLinks: ImageLinks = { smallThumbnail: '', thumbnail: ''};
+
 export const searchBook = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { author, title, genre } = req.body;            
 
@@ -30,6 +32,8 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
 
     if (apiQuery.charAt(apiQuery.length - 1) === '+')
         apiQuery = apiQuery.slice(0, -1);
+
+    apiQuery += `&maxResults=20`;
 
     apiQuery += `&key=${apiKey}`;
 
@@ -57,18 +61,18 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
             let bookInfo = typedItem.volumeInfo;
             let newBook: BookData = {
                 title: bookInfo.title as string,
-                authors: bookInfo.authors as string[],
-                categories: bookInfo.categories as string[],
+                authors: bookInfo.authors as string[] ?? {},
+                categories: bookInfo.categories as string[] ?? {},
                 pagesRead: 0,
-                totalPages: bookInfo.pageCount as number,
-                averageRating: bookInfo.averageRating as number,
-                numberOfRatings: bookInfo.ratingsCount as number,
-                imageLinks: bookInfo.imageLinks as ImageLinks,
+                totalPages: bookInfo.pageCount as number ?? 0,
+                averageRating: bookInfo.averageRating as number ?? 0,
+                numberOfRatings: bookInfo.ratingsCount as number ?? 0,
+                imageLinks: bookInfo.imageLinks as ImageLinks ?? defaultImageLinks,
                 status: 'Want to read',
                 userID: req.user?.userId as any
             }            
             result.push(newBook);            
-        })
+        })        
         return res.status(200).json({ Books: result });        
     })
     .catch(error => {
@@ -78,7 +82,7 @@ export const searchBook = asyncHandler(async (req: Request, res: Response, next:
 })
 
 export const addBookToUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { title, authors, categories, pagesRead, totalPages, thumbnail } = req.body;
+    const { title, authors, categories, pagesRead, totalPages, smallThumbnail } = req.body;
     
     const existingBookForUser = await BookModel.findOne({
         title, authors, totalPages, userID: req.user?.userId
@@ -95,7 +99,7 @@ export const addBookToUser = asyncHandler(async (req: Request, res: Response, ne
         pagesRead: 0,
         totalPages: totalPages,
         status: 'Want to read',
-        thumbnail: thumbnail,
+        thumbnail: smallThumbnail,
         userID: req.user?.userId
     });    
 

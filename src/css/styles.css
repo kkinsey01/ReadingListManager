@@ -29,6 +29,15 @@
     display: block;
 }
 
+.profile-item {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.aliceblue {
+    background-color: aliceblue;
+}
+
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;    
 }
