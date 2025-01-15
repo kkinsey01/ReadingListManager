@@ -10,6 +10,7 @@
         <link href="/public/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link href="/src/css/styles.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     </head>
     <body>
         <header class="p-3 bg-secondary text-white">
@@ -21,10 +22,11 @@
                             <li><a id="navHomeLink" href="#" class="nav-link px-2 text-white">Home</a></li>
                             <li><a id="navAddBookLink" href="#" class="nav-link px-2 text-white">Add Book</a></li>
                         </ul>            
-                        <div class="ms-5"></div>  
+                        <div class="ms-5"></div>                          
+                        <input type="text" class="mx-1 aliceblue" id="searchProfile" name="searchProfile" placeholder="Username...">
                         <a href="#" id="searchLink" class="image-link mx-1" data-toggle="tooltip" data-placement="bottom" title="Search">
                             <img src="/src/images/SearchImage.png" alt="Search" class="nav-image">
-                        </a>
+                        </a>                           
                         <a href="#" id="profileLink" class="image-link mx-1" data-toggle="tooltip" data-placement="bottom" title="Profile">
                             <img src="/src/images/ProfilePlaceholder.png" alt="Profile" class="nav-image">
                         </a>
@@ -94,18 +96,18 @@
                 <div class="col-12 mt-3">
                     <span class="font-weight-bold justify-content-center align-items-center mb-2 table-header">Book Search</span>
                     <div class="d-flex">
-                        <input class="me-4" type="text" id="addBookAuthor" name="addBookAuthor" placeholder="Author">
-                        <input class="me-4" type="text" id="addBookTitle" name="addBookTitle" placeholder="Title">
-                        <input class="me-4"type="text" id="addBookGenre" name="addBookGenre" placeholder="Genre">
+                        <input class="me-4 aliceblue" type="text" id="addBookAuthor" name="addBookAuthor" placeholder="Author">
+                        <input class="me-4 aliceblue" type="text" id="addBookTitle" name="addBookTitle" placeholder="Title">
+                        <input class="me-4 aliceblue" type="text" id="addBookGenre" name="addBookGenre" placeholder="Genre">
                         <button id="bookSearchButton" type="button" class="btn btn-info">Search</button>
                     </div>
 
                     <div id="addBookTableContainer" style="display: none;" class="mt-3">
                         <div class="d-flex mb-2">
                             <span class="font-weight-bold justify-content-center align-items-center table-header">Search Results</span>
-                            <div id="bookQueryDropDownContainer" class="px-3">
+                            <div id="bookQueryDropDownContainer" class="px-3 d-flex">
                                 <span class="font-weight-bold tableheader">Sort By</span>
-                                <div class="dropdown">
+                                <div class="dropdown ms-4">
                                     <button class="btn btn-info dropdown-toggle" type="button" id="bookSearchSortBy" data-toggle="dropdown">
                                         Title
                                     </button>
@@ -117,9 +119,7 @@
                                         <a class="dropdown-item" href="#" data-value="Total Ratings">Total Ratings</a>
                                     </div>
                                 </div>
-                            </div>  
-                            <button id="bookSearchSortIncreasing" type="button" class="btn btn-info">Increasing</button>
-                            <button id="bookSearchSortDecreasing" type="button" class="btn btn-info">Decreasing</button>
+                            </div> 
                         </div>                        
                         <table id="addBookTable" class="table table-hover table-responsive h-50 overflow-auto">
                             <thead class="sticky-table-header">
@@ -142,6 +142,54 @@
                 </div>                
             </div>
         </div>       
+
+        <div id="ProfilePage" style="display: none;">
+            <div class="container">
+                <div class="mt-3 row">
+                    <div id="ProfileCard" class="col-3 card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+                        <h1 class="card-title text-center mb-5">Profile</h1>
+                        <div>
+                            <span id="profileTotalBooks" class="profile-item">Total Books: </span>
+                            <span id="profileBooksRead" class="profile-item">Total Read: </span>
+                            <span id="profilePagesRead" class="profile-item">Pages Read: </span>
+                            <span id="profilePagesToRead" class="profile-item">Pages Left: </span>
+                            <span id="profileNumLikes" class="profile-item">Total Likes: </span>
+                            <span id="profileNumDislikes" class="profile-item">Total Dislikes: </span>
+
+                        </div>
+                    </div>
+                    <div class="col-9">                
+                        <div class="d-flex">
+                            <span class="font-weight-bold">Sort By:</span>
+                            <div class="dropdown ms-3">
+                                <button class="btn btn-info dropdown-toggle" type="button" id="profileSortBy" data-toggle="dropdown">
+                                    All
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" data-value="All">All</a>
+                                    <a class="dropdown-item" href="#" data-value="In Progress">In Progress</a>
+                                    <a class="dropdown-item" href="#" data-value="Likes">Likes</a>                                    
+                                    <a class="dropdown-item" href="#" data-value="Dislikes">Dislikes</a>
+                                </div>
+                            </div>
+                        </div>                    
+                        <table id="profileTable" class="table table-hover table-responsive mt-3">
+                            <tr>
+                                <th></th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Genre</th>
+                                <th>Page Count</th>
+                                <th>Review</th>
+                            </tr>
+                            <tbody id="profileTableBody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <!-- Modal -->
@@ -240,12 +288,37 @@
             </table>           
         </div>
 
+        <!-- Profile table template -->
+        <div style="display: none;">
+            <table>
+                <tr id="profileRowTemplate">
+                    <td class="profile-thumbnail">
+                        <img class="profile-book-thumbnail-image book-image" src="" alt="">
+                    </td>
+                    <td class="profile-title"></td>
+                    <td class="profile-author"></td>
+                    <td class="profile-genre"></td>
+                    <td class="profile-page-count"></td>
+                    <td class="profile-review">
+                        <a href="#" class="image-link mx-1 profile-positive" data-toggle="tooltip" data-placement="bottom" title="Positive">
+                            <img src="/src/images/ThumbsUp.png" class="nav-image" alt="Positive Review">
+                        </a>
+                        <a href="#" class="image-link mx-1 profile-negative" data-toggle="tooltip" data-placement="bottom" title="Negative">
+                            <img src="/src/images/ThumbsDown.png" class="nav-image" alt="Negative Review" style="width: 60px; height: auto;">
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <script src="/public/js/bootstrap.bundle.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/f7b36e9f09.js" crossorigin="anonymous"></script>
         <script defer type="module" src="/src/js/app.js"></script>
         <script defer type="module" src="/src/js/addBook.js"></script>
         <script defer type="module" src="/src/js/retrieveBook.js"></script>
+        <script defer type="module" src="/src/js/profile.js"></script>
     </body>
 </html>
